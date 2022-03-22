@@ -1,0 +1,11 @@
+server:
+  servlet:
+    context-path: /api
+  port: 8087
+
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27117
+      database: gestion-evenements
