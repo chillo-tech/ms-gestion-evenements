@@ -1,0 +1,25 @@
+
+server:
+    servlet:
+        context-path: /api
+    port: 8087
+
+spring:
+    data:
+        mongodb:
+            host: localhost
+            port: 27017
+            database: gestion-evenements
+    mail:
+        host: localhost
+        username :
+        password:
+        port: 25
+        protocol: smtp
+        test-connection: false
+
+
+
+
+
+
