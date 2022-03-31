@@ -37,20 +37,16 @@ public class EvenementsService {
 		if (evenement.getNom() == null || evenement.getNom().trim().isEmpty()){
 			throw new ApplicationException("Champs obligatoire");
 		}
-
 		EventStatus status = eventStatus(evenement.getDateDebut(), evenement.getDateFin());
 		evenement.setStatut(status);
 
 		//Adresse adresse = adresseRepository.save(evenement.getAdresse());
-	    //evenement.setAdresse(adresse);
+	    //evenement.	setAdresse(adresse);
 
 		//Utilisateur utilisateur= utilisateurRepository.save(evenement.getUtilisateur());
 		//evenement.setUtilisateur(utilisateur);
-
 		evenementsRepository.save(evenement);
-
 	}
-
 	private EventStatus eventStatus(Date dateDebut,Date dateFin ) {
 		Date date = new Date();
 		EventStatus status = EventStatus.DISABLED;
