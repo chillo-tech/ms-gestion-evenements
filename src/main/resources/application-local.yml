@@ -18,6 +18,10 @@ spring:
         protocol: smtp
         test-connection: false
 
+Mongock:
+    change-logs-scan-package: com.cs.ge.configuration
+
+
 
 
 

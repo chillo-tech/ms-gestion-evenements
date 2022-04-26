@@ -6,9 +6,9 @@ import com.cs.ge.services.EvenementsService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping(path = "evenement", produces = "application/json")
+	@RequestMapping(path = "evenement", produces = "application/json")
 public class EvenementsControlleur {
 
 	private final EvenementsService evenementsService;

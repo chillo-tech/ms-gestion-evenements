@@ -1,12 +1,11 @@
 package com.cs.ge.entites;
 
-import lombok.*;
 import com.cs.ge.enums.Role;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.Collection;
 
@@ -25,7 +24,7 @@ public class Utilisateur implements UserDetails {
     private String password;
     private Boolean enabled = false;
     private Boolean locked = false;
-    private Role role;
+    private Role role ;
 
 
     @Override

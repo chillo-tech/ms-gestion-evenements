@@ -69,7 +69,7 @@ public class UtilisateursService implements UserDetailsService {
 		Utilisateur utilisateur = verification.getUtilisateur();
 		utilisateur = utilisateurRepository.findById(utilisateur.getId()).orElseThrow(() -> new ApplicationException("aucun utilisateur pour ce code"));;
 		utilisateur.setEnabled(true);
-		LocalDateTime localDateTime=verification.getDateExpiration();
+			LocalDateTime localDateTime=verification.getDateExpiration();
 		//if (localDateTime=)
 		utilisateurRepository.save(utilisateur);
 		}
