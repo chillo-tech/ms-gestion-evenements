@@ -1,8 +1,6 @@
 package com.cs.ge.configuration;
 
-import com.cs.ge.enums.Role;
 import lombok.RequiredArgsConstructor;
-//import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -16,35 +14,37 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class  SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
-    protected  void configure(AuthenticationManagerBuilder auth) throws Exception{
-      //  auth.inMemoryAuthentication()
-           //     .withUser("kwe").password(bCryptPasswordEncoder().encode("athe1").roles("ADMIN")
-                //.and()
-               // .withUser("min").password("minou").roles("ADMIN","USER");
+    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
+        //  auth.inMemoryAuthentication()
+        //     .withUser("kwe").password(bCryptPasswordEncoder().encode("athe1").roles("ADMIN")
+        //.and()
+        // .withUser("min").password("minou").roles("ADMIN","USER");
     }
+
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    protected void configure(final HttpSecurity http) throws Exception {
         http
                 .csrf()
                 .disable()
                 .authorizeRequests()
-              //  .antMatchers(HttpMethod.POST,"/connexion").permitAll()
-                .antMatchers(HttpMethod.POST,"inscription").permitAll()
-               .anyRequest()
+                .antMatchers(HttpMethod.POST, "/connexion").permitAll()
+                .antMatchers(HttpMethod.POST, "inscription").permitAll()
+                .antMatchers("/admin").hasRole("ADMIN")
+                .antMatchers("/user").hasRole("USER")
+                .anyRequest()
                 .permitAll()
-                     .and()
+                .and()
                 .httpBasic();
 
 
-
-
     }
-     @Bean
-     public BCryptPasswordEncoder bCryptPasswordEncoder(){
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
-        }
+    }
 
 }

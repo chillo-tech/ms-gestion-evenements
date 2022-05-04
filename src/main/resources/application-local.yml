@@ -1,25 +1,25 @@
-
 server:
-    servlet:
-        context-path: /api
-    port: 8087
+  servlet:
+    context-path: /api
+  port: 8087
 
 spring:
-    data:
-        mongodb:
-            host: localhost
-            port: 27017
-            database: gestion-evenements
-    mail:
-        host: localhost
-        username :
-        password:
-        port: 25
-        protocol: smtp
-        test-connection: false
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: gestion-evenements
+  mail:
+    host: localhost
+    username:
+    password:
+    port: 25
+    protocol: smtp
+    test-connection: false
 
-Mongock:
-    change-logs-scan-package: com.cs.ge.configuration
+mongock:
+  migration-scan-package:
+    - com.cs.ge.configuration
 
 
 
