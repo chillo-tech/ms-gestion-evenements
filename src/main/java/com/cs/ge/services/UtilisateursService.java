@@ -1,5 +1,6 @@
 package com.cs.ge.services;
 
+import com.cs.ge.entites.JwtRequest;
 import com.cs.ge.entites.Mail;
 import com.cs.ge.entites.Utilisateur;
 import com.cs.ge.entites.Verification;
@@ -29,7 +30,6 @@ public class UtilisateursService implements UserDetailsService {
     private final VerificationService verificationService;
     private final UtilitaireService utilitaireService;
     private final PasswordEncoder passwordEncoder;
-
 
     public UtilisateursService(final UtilisateurRepository utilisateurRepository, final UtilitaireService utilitaireService, final VerificationService verificationService) {
         this.utilisateurRepository = utilisateurRepository;
@@ -64,8 +64,15 @@ public class UtilisateursService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-        return null;
+        final JwtRequest jwtRequest = new JwtRequest();
+        if (jwtRequest.getUsername().equals(username)) {
+            return this.utilisateurRepository.findByUsername(username);
+
+        } else {
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
     }
+
 
     public void activate(final String code) {
         final Verification verification = this.verificationService.getByCode(code);

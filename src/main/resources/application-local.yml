@@ -21,6 +21,10 @@ mongock:
   migration-scan-package:
     - com.cs.ge.configuration
 
+jwt:
+  secret: chillo
+
+
 
 
 

@@ -10,9 +10,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 @Data
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
 @Setter
 @Document("UTILISATEURS")
 public class Utilisateur implements UserDetails {
@@ -24,7 +24,7 @@ public class Utilisateur implements UserDetails {
     private String password;
     private Boolean enabled = false;
     private Boolean locked = false;
-    private Role role ;
+    private Role role;
 
 
     @Override
@@ -32,14 +32,14 @@ public class Utilisateur implements UserDetails {
         return null;
     }
 
-    public boolean isAccountNonExpired(){
-        return true ;
+    public boolean isAccountNonExpired() {
+        return true;
 
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return !locked;
+        return !this.locked;
     }
 
     @Override
@@ -49,7 +49,7 @@ public class Utilisateur implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return this.enabled;
     }
 
 

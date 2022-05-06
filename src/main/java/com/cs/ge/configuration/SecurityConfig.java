@@ -1,27 +1,45 @@
 package com.cs.ge.configuration;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-
+@AllArgsConstructor
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    private UserDetailsService utilisateursService;
+
 
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-        //  auth.inMemoryAuthentication()
-        //     .withUser("kwe").password(bCryptPasswordEncoder().encode("athe1").roles("ADMIN")
-        //.and()
-        // .withUser("min").password("minou").roles("ADMIN","USER");
+        auth.authenticationProvider(this.daoAuthenticationProvider());
+    }
+
+
+    public AuthenticationProvider daoAuthenticationProvider() {
+        final DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setPasswordEncoder(this.bCryptPasswordEncoder());
+        daoAuthenticationProvider.setUserDetailsService(this.utilisateursService);
+        return daoAuthenticationProvider;
+    }
+
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     @Override
@@ -30,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/connexion").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/authenticate").permitAll()
                 .antMatchers(HttpMethod.POST, "inscription").permitAll()
                 .antMatchers("/admin").hasRole("ADMIN")
                 .antMatchers("/user").hasRole("USER")
