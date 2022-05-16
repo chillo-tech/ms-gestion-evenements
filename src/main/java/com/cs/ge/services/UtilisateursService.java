@@ -86,7 +86,7 @@ public class UtilisateursService implements UserDetailsService {
     }
 
     public void validationUsername(final String username) {
-        final Optional<Utilisateur> exist = this.utilisateurRepository.findById(username);
+        final Optional<Utilisateur> exist = Optional.ofNullable(this.utilisateurRepository.findByUsername(username));
         if (exist.isPresent()) {
             throw new ApplicationException("Username existe déjà");
         }
