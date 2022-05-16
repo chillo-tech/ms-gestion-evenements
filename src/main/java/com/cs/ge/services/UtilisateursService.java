@@ -85,7 +85,15 @@ public class UtilisateursService implements UserDetailsService {
         this.utilisateurRepository.save(utilisateur);
     }
 
+    public void validationUsername(final String username) {
+        final Optional<Utilisateur> exist = this.utilisateurRepository.findById(username);
+        if (exist.isPresent()) {
+            throw new ApplicationException("Username existe déjà");
+        }
+    }
+
     public void add(final Utilisateur utilisateur) { // en entrée je dois avoir quelque chose sous la forme d'un Utilisateur de type utilisateur
+        this.validationUsername(utilisateur.getUsername());
         String lastName = utilisateur.getLastName();
         lastName = lastName.toUpperCase();
         utilisateur.setLastName(lastName);
@@ -119,7 +127,7 @@ public class UtilisateursService implements UserDetailsService {
     public String inscription(final Utilisateur utilisateur) throws MessagingException, IOException {
         final String encodedPassword = this.passwordEncoder.encode(utilisateur.getPassword());
         utilisateur.setPassword(encodedPassword);
-        this.utilitaireService.validationChaine(utilisateur.getFirstName());
+        UtilitaireService.validationChaine(utilisateur.getFirstName());
         valEmail(utilisateur.getUsername());
         valNumber(utilisateur.getUsername());
         this.utilisateurRepository.save(utilisateur);

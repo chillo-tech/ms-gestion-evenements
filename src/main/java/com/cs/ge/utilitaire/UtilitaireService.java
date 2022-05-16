@@ -5,8 +5,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UtilitaireService {
+    // private final UtilisateurRepository utilisateurRepository;
 
-    public void validationChaine(String chaine) {
+    //public UtilitaireService(final UtilisateurRepository utilisateurRepository) {
+    //     this.utilisateurRepository = utilisateurRepository;
+    //   }
+
+
+    public static void validationChaine(final String chaine) {
         if (chaine == null || chaine.trim().isEmpty()) {
             throw new ApplicationException("Champs obligatoire");
         }
