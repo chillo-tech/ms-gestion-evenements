@@ -21,11 +21,10 @@ public class DatabaseChangeLogC {
         categorie.setLibelle("Mariage");
 
         final Categorie categorie1 = new Categorie();
-        categorie1.setLibelle("Anniversaire");
+        categorie.setLibelle("Anniversaire");
 
         final Categorie categorie2 = new Categorie();
         categorie2.setLibelle("Salon");
-
 
         this.mongoTemplate.save(categorie);
 

@@ -1,10 +1,11 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Spring boot eamil teplate with Thymeleaf</title>
+    <title>Spring boot email temxplate with Thymeleaf</title>
 
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 
     <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'/>
 
@@ -17,22 +18,22 @@
     </style>
 </head>
 <body>
-<tr><p th:text="${'Hello' + name}"></p>
+<tr><p th:text="${'Hello'+ name}"></p>
     <td align="center" style="line-height:0px;"></td>
     </p>
-   </tr>
-   <p th:text="${'merci pour votre inscripyion!'}"></p>
-   </p>
-   Merci de confirmer votre email d'inscription pour activer votre compte
-   <p>
-       cliquez sur le lien ci-dessous pour confirmer votre inscription
-   </p>
-   <p>
-       <button onclick="window.location.href = 'http://localhost:8087/activate?code'+code;">Cliquez Ici</button>
-   <p>
+</tr>
+<p th:text="${'merci pour votre inscripyion!'}"></p>
+</p>
+Merci de confirmer votre email d'inscription pour activer votre compte
+<p>
+    cliquez sur le lien ci-dessous pour confirmer votre inscription
+</p>
+<p>
+    <button onclick="window.location.href = 'http://localhost:8087/activate?code'+code;">Cliquez Ici</button>
+<p>
     <span th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}"></span>
-   </p>
-   <p>
-   </p>
+</p>
+<p>
+</p>
 </body>
 </html>

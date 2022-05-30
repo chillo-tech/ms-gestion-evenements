@@ -30,5 +30,4 @@ public class Evenement {
     private Adresse adresse;
     private Categorie categorie;
 
-
 }

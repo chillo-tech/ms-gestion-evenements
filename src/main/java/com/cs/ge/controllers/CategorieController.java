@@ -2,15 +2,13 @@ package com.cs.ge.controllers;
 
 import com.cs.ge.entites.Categorie;
 import com.cs.ge.services.CategorieService;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.activation.FileTypeMap;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.io.InputStream;
 import java.util.List;
+
+import static org.codehaus.plexus.util.IOUtil.toByteArray;
 
 
 @RestController
@@ -50,10 +48,17 @@ public class CategorieController {
         return this.categorieService.search();
     }
 
-    @GetMapping("/image")
-    public ResponseEntity<byte[]> getImage() throws IOException {
-        final File img = new File("src/main/resources/image/Mariage/alexis-antoine-GBpKfFfJhgw-unsplash.jpg");
-        return ResponseEntity.ok().contentType(MediaType.valueOf(FileTypeMap.getDefaultFileTypeMap().getContentType(img))).body(Files.readAllBytes(img.toPath()));
+    //@GetMapping("/image")
+    // public ResponseEntity<byte[]> getImage() throws IOException {
+    //    final File img = new File("src/main/resources/image/Mariage/alexis-antoine-GBpKfFfJhgw-unsplash.jpg");
+    //   return ResponseEntity.ok().contentType(MediaType.valueOf(FileTypeMap.getDefaultFileTypeMap().getContentType(img))).body(Files.readAllBytes(img.toPath()));
+    // }
+    @GetMapping(value = "/images")
+    public @ResponseBody
+    byte[] getImage() throws IOException {
+        final InputStream in = this.getClass()
+                .getResourceAsStream("/src/main/resources/images/mariages/alexis-antoine-GBpKfFfJhgw-unsplash.jpg");
+        return toByteArray(in);
     }
 }
 
