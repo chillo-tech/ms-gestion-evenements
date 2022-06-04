@@ -6,11 +6,9 @@ import com.cs.ge.entites.Mail;
 import com.cs.ge.enums.EventStatus;
 import com.cs.ge.exception.ApplicationException;
 import com.cs.ge.repositories.EvenementsRepository;
-import com.google.zxing.BarcodeFormat;
+import com.cs.ge.utilitaire.UtilitaireService;
 import com.google.zxing.WriterException;
-import com.google.zxing.client.j2se.MatrixToImageWriter;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.QRCodeWriter;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -20,11 +18,8 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
 import java.util.*;
 
 @Service
@@ -32,12 +27,14 @@ public class EvenementsService {
     private static final String QR_CODE_IMAGE_PATH = "./src/main/resources/QRCode.png";
     private final EvenementsRepository evenementsRepository;
     private final JavaMailSender javaMailSender;
+    private final QRCodeGeneratorService qrCodeGeneratorService;
     @Autowired
     private SpringTemplateEngine templateEngine;
 
-    public EvenementsService(final EvenementsRepository evenementsRepository, final JavaMailSender javaMailSender) {
+    public EvenementsService(final EvenementsRepository evenementsRepository, final JavaMailSender javaMailSender, final QRCodeGeneratorService qrCodeGeneratorService) {
         this.evenementsRepository = evenementsRepository;
         this.javaMailSender = javaMailSender;
+        this.qrCodeGeneratorService = qrCodeGeneratorService;
     }
 
     private static EventStatus eventStatus(final Date dateDebut, final Date dateFin) {
@@ -58,27 +55,6 @@ public class EvenementsService {
 
         return status;
     }
-
-    public static void generateQRCodeImage(final String text, final int width, final int height, final String filePath)
-            throws WriterException, IOException {
-        final QRCodeWriter qrCodeWriter = new QRCodeWriter();
-        final BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
-
-        final Path path = FileSystems.getDefault().getPath(filePath);
-        MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
-
-    }
-
-    public static byte[] getQRCodeImage(final String text, final int width, final int height) throws WriterException, IOException {
-        final QRCodeWriter qrCodeWriter = new QRCodeWriter();
-        final BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
-
-        final ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
-        MatrixToImageWriter.writeToStream(bitMatrix, "PNG", pngOutputStream);
-        final byte[] pngData = pngOutputStream.toByteArray();
-        return pngData;
-    }
-
 
     public List<Evenement> search() {
         return this.evenementsRepository.findAll();
@@ -142,6 +118,8 @@ public class EvenementsService {
 
     public String addInvites(final String id, final Invite invite) throws IOException, WriterException, MessagingException {
         final Evenement evenement = this.read(id);
+        UtilitaireService.valEmail(invite.getUsername());
+        UtilitaireService.valNumber(invite.getUsername());
         List<Invite> invites = evenement.getInvite();
         if (invites == null) {
             invites = new ArrayList<>();
@@ -149,20 +127,21 @@ public class EvenementsService {
         invites.add(invite);
         evenement.setInvite(invites);
         this.evenementsRepository.save(evenement);
-        final String url = "/src/main/java/resources/templateQRCode";
-        generateQRCodeImage(url, 250, 250, QR_CODE_IMAGE_PATH);
+        final String randomCode = RandomString.make(4);
+        invite.setId(UUID.randomUUID().toString());
+        final String text = String.format("{'user':'%s','event':'%s'}", invite.getId(), evenement.getId());
+        final String image = QRCodeGeneratorService.generateQrCodeBase64(text, 200, 200);
         final Mail mail = new Mail();
         final Map<String, Object> model = new HashMap<String, Object>();
         model.put("name", invite.getPrenomI());
-        model.put("location", "United States");
+        model.put("image", image);
         model.put("sign", "Java Developer");
-        mail.setMailTo(invite.getNomI());
+        mail.setMailTo(invite.getUsername());
         mail.setSubject("QRCode mail");
         mail.setMailFrom("noreply@athena.com");
         mail.setProps(model);
         this.sendEmail(mail);
         return "success";
     }
-
 }
 

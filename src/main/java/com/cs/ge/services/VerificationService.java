@@ -61,4 +61,6 @@ public class VerificationService {
         helper.setFrom(mail.getMailFrom());
         this.javaMailSender.send(message);
     }
+
+
 }

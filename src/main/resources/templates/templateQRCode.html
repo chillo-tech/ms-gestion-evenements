@@ -5,11 +5,7 @@
 </head>
 <body>
 <div class="container">
-    <a class="btn btn-link" href="/">Back to home</a>
-    <br/>
-    <p>
-        <a onclick="window.location.href = 'http://localhost:8087/api/genrateAndDownloadQRCode?codeText=qrcode&width=300&height=350'+code;"></a>
-    <p>
+    <img th:src="'data:image/png;base64, ' + ${image}"/>
 </div>
 </body>
 </html>

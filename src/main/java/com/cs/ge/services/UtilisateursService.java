@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.regex.Pattern;
 
 @Service
 public class UtilisateursService implements UserDetailsService {
@@ -38,29 +37,6 @@ public class UtilisateursService implements UserDetailsService {
         this.verificationService = verificationService;
     }
 
-    public static boolean valEmail(final String username) {
-        final String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." +
-                "[a-zA-Z0-9_+&*-]+)*@" +
-                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
-                "A-Z]{2,7}$";
-        final Pattern pat = Pattern.compile(emailRegex);
-        if (username == null) {
-            return false;
-        }
-
-        final boolean resultat = pat.matcher(username).matches();
-        return resultat;
-    }
-
-    public static boolean valNumber(final String username) {
-        final String numberRegex = "(6|5|0|9)?[0-9]{9}";
-        final Pattern pat = Pattern.compile(numberRegex);
-        if (username == null) {
-            return false;
-        }
-        final boolean resultat = pat.matcher(username).matches();
-        return resultat;
-    }
 
     @Override
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
@@ -128,8 +104,8 @@ public class UtilisateursService implements UserDetailsService {
         final String encodedPassword = this.passwordEncoder.encode(utilisateur.getPassword());
         utilisateur.setPassword(encodedPassword);
         UtilitaireService.validationChaine(utilisateur.getFirstName());
-        valEmail(utilisateur.getUsername());
-        valNumber(utilisateur.getUsername());
+        UtilitaireService.valEmail(utilisateur.getUsername());
+        UtilitaireService.valNumber(utilisateur.getUsername());
         this.utilisateurRepository.save(utilisateur);
         this.verificationService.createCode(utilisateur);
         final Mail mail = new Mail();
